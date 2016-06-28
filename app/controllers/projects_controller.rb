@@ -4,10 +4,10 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    user = User.create(email: 'hiaa@gmail.com', password: '12345678', password_confirmation: '12345678', name: 'hiaa')
-    admin = Admin.new
-    admin.user = user
-    admin.save
+    # user = User.create(email: 'hiaa@gmail.com', password: '12345678', password_confirmation: '12345678', name: 'hiaa')
+    # admin = Admin.new
+    # admin.user = user
+    # admin.save
     @projects = Project.all
   end
 

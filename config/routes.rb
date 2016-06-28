@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :roles
   root 'projects#index'
   resources :projects
   devise_for :users

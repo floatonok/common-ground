@@ -10,37 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160628082515) do
+ActiveRecord::Schema.define(version: 20160628124034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "admins", force: :cascade do |t|
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_admins_on_user_id", using: :btree
-  end
-
-  create_table "collaborators", force: :cascade do |t|
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_collaborators_on_user_id", using: :btree
-  end
-
-  create_table "collaborators_projects", id: false, force: :cascade do |t|
-    t.integer "collaborator_id", null: false
-    t.integer "project_id",      null: false
-  end
 
   create_table "projects", force: :cascade do |t|
     t.string   "title"
     t.string   "overview"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "admin_id"
-    t.index ["admin_id"], name: "index_projects_on_admin_id", using: :btree
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.string   "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_roles_on_project_id", using: :btree
+    t.index ["user_id"], name: "index_roles_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -61,7 +50,6 @@ ActiveRecord::Schema.define(version: 20160628082515) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
-  add_foreign_key "admins", "users"
-  add_foreign_key "collaborators", "users"
-  add_foreign_key "projects", "admins"
+  add_foreign_key "roles", "projects"
+  add_foreign_key "roles", "users"
 end
