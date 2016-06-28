@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :admins
+  has_many :collaborators
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
 
