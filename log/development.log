@@ -1,0 +1,370 @@
+  [1m[35m (15.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (3.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(5379555713109936855);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to DeviseCreateUsers (20160628062546)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.5ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "email" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" inet, "last_sign_in_ip" inet, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160628062546"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", 2016-06-28 06:41:58 UTC], ["updated_at", 2016-06-28 06:41:58 UTC]]
+  [1m[35m (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(5379555713109936855)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (3.7ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+Started GET "/" for ::1 at 2016-06-28 14:57:55 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/railties-5.0.0.rc2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/railties-5.0.0.rc2/lib/rails/templates/rails/welcome/index.html.erb (6.9ms)
+Completed 200 OK in 32ms (Views: 15.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for ::1 at 2016-06-28 14:57:56 +0800
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/railties-5.0.0.rc2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/railties-5.0.0.rc2/lib/rails/templates/rails/welcome/index.html.erb (3.1ms)
+Completed 200 OK in 8ms (Views: 5.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_up" for ::1 at 2016-06-28 14:58:59 +0800
+Processing by Devise::RegistrationsController#new as HTML
+  Rendering devise/registrations/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (1.2ms)
+  Rendered devise/registrations/new.html.erb within layouts/application (31.4ms)
+Completed 200 OK in 400ms (Views: 381.0ms | ActiveRecord: 5.1ms)
+
+
+Started GET "/users/edit" for ::1 at 2016-06-28 14:59:36 +0800
+Processing by Devise::RegistrationsController#edit as HTML
+Completed 401 Unauthorized in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_in" for ::1 at 2016-06-28 14:59:36 +0800
+Processing by Devise::SessionsController#new as HTML
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (0.9ms)
+  Rendered devise/sessions/new.html.erb within layouts/application (5.5ms)
+Completed 200 OK in 24ms (Views: 21.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/password/new" for ::1 at 2016-06-28 15:00:02 +0800
+Processing by Devise::PasswordsController#new as HTML
+  Rendering devise/passwords/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (0.8ms)
+  Rendered devise/passwords/new.html.erb within layouts/application (4.5ms)
+Completed 200 OK in 22ms (Views: 19.8ms | ActiveRecord: 0.0ms)
+
+
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(5379555713109936855);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to AddColumnToUser (20160628070857)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.6ms)[0m  [1m[35mALTER TABLE "users" ADD "name" character varying[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160628070857"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.7ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(5379555713109936855)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (3.4ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+Started GET "/users/new" for ::1 at 2016-06-28 15:15:52 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  
+ActionController::RoutingError (No route matches [GET] "/users/new"):
+  
+actionpack (5.0.0.rc2) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.3.0) lib/web_console/middleware.rb:131:in `call_app'
+web-console (3.3.0) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.3.0) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.3.0) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.0.rc2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0.rc2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0.rc2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0.rc2) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0.rc2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0.rc2) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0.rc2) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.1.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.0.rc2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.0.rc1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.0.rc1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0.rc2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0.rc2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0.rc2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.0.rc1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0.rc2) lib/rails/engine.rb:522:in `call'
+puma (3.4.0) lib/puma/configuration.rb:224:in `call'
+puma (3.4.0) lib/puma/server.rb:569:in `handle_request'
+puma (3.4.0) lib/puma/server.rb:406:in `process_client'
+puma (3.4.0) lib/puma/server.rb:271:in `block in run'
+puma (3.4.0) lib/puma/thread_pool.rb:114:in `block in spawn_thread'
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (0.9ms)
+  Rendered collection of /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/routes/_route.html.erb [15 times] (14.1ms)
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/routes/_table.html.erb (2.7ms)
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (81.1ms)
+Started GET "/users/new" for ::1 at 2016-06-28 15:15:52 +0800
+  
+ActionController::RoutingError (No route matches [GET] "/users/new"):
+  
+actionpack (5.0.0.rc2) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.3.0) lib/web_console/middleware.rb:131:in `call_app'
+web-console (3.3.0) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.3.0) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.3.0) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.0.rc2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0.rc2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0.rc2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0.rc2) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0.rc2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0.rc2) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0.rc2) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.1.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.0.rc2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.0.rc1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.0.rc1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0.rc2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0.rc2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0.rc2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.0.rc1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0.rc2) lib/rails/engine.rb:522:in `call'
+puma (3.4.0) lib/puma/configuration.rb:224:in `call'
+puma (3.4.0) lib/puma/server.rb:569:in `handle_request'
+puma (3.4.0) lib/puma/server.rb:406:in `process_client'
+puma (3.4.0) lib/puma/server.rb:271:in `block in run'
+puma (3.4.0) lib/puma/thread_pool.rb:114:in `block in spawn_thread'
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.1ms)
+  Rendered collection of /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/routes/_route.html.erb [15 times] (4.0ms)
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/routes/_table.html.erb (1.3ms)
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.3ms)
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (62.1ms)
+Started GET "/users/sign_up" for ::1 at 2016-06-28 15:16:20 +0800
+Processing by Devise::RegistrationsController#new as HTML
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(sign_up) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:9)
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(account_update) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:10)
+  Rendering devise/registrations/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (1.1ms)
+  Rendered devise/registrations/new.html.erb within layouts/application (5.0ms)
+Completed 500 Internal Server Error in 46ms (ActiveRecord: 4.4ms)
+
+
+  
+ActionView::Template::Error (File to import not found or unreadable: bootstrap-sprockets.
+Load paths:
+  /Users/isabellaong/General Assembly/common-ground/app/assets/config
+  /Users/isabellaong/General Assembly/common-ground/app/assets/images
+  /Users/isabellaong/General Assembly/common-ground/app/assets/javascripts
+  /Users/isabellaong/General Assembly/common-ground/app/assets/stylesheets
+  /Users/isabellaong/General Assembly/common-ground/vendor/assets/javascripts
+  /Users/isabellaong/General Assembly/common-ground/vendor/assets/stylesheets
+  /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/jquery-rails-4.1.1/vendor/assets/javascripts
+  /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/coffee-rails-4.1.1/lib/assets/javascripts
+  /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actioncable-5.0.0.rc2/lib/assets/compiled
+  /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/turbolinks-source-5.0.0.beta5/lib/assets/javascripts):
+    4:   <title>CommonGround</title>
+    5:   <%= csrf_meta_tags %>
+    6: 
+    7:   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    8:   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    9: </head>
+   10: 
+  
+app/assets/stylesheets/application.scss:16
+app/views/layouts/application.html.erb:7:in `_app_views_layouts_application_html_erb___2017838516407752127_70166696943140'
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (5.6ms)
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.1ms)
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.6ms)
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (59.8ms)
+Started GET "/users/sign_up" for ::1 at 2016-06-28 15:16:53 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Devise::RegistrationsController#new as HTML
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(sign_up) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:9)
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(account_update) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:10)
+  Rendering devise/registrations/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (1.1ms)
+  Rendered devise/registrations/new.html.erb within layouts/application (31.0ms)
+Completed 200 OK in 2814ms (Views: 2779.7ms | ActiveRecord: 5.9ms)
+
+
+Started GET "/users/sign_up" for ::1 at 2016-06-28 15:28:54 +0800
+Processing by Devise::RegistrationsController#new as HTML
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(sign_up) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:9)
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(account_update) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:10)
+  Rendering devise/registrations/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (1.1ms)
+  Rendered devise/registrations/new.html.erb within layouts/application (5.1ms)
+Completed 200 OK in 75ms (Views: 73.4ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users" for ::1 at 2016-06-28 15:29:28 +0800
+Processing by Devise::RegistrationsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"Qi/qSMgPx9BESHjY/8Mvl5kZfgloDfdRZNrZuf9c+aSJtZfOipxnW8aOTbu62JBI3qHrikKsW+3n7SuFz4OYMw==", "user"=>{"email"=>"isabella@cg.com", "name"=>"floatonok", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign up"}
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(sign_up) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:9)
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(account_update) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:10)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (1.4ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "isabella@cg.com"], ["LIMIT", 1]]
+  [1m[35mSQL (2.6ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at", "name") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["email", "isabella@cg.com"], ["encrypted_password", "$2a$11$UW71SDuyxB2B3U50EAWZjOq38lT/4MuhIkCZ9No8H7Jnb8BOverZO"], ["created_at", 2016-06-28 07:29:28 UTC], ["updated_at", 2016-06-28 07:29:28 UTC], ["name", "floatonok"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.5ms)[0m  [1m[33mUPDATE "users" SET "sign_in_count" = $1, "current_sign_in_at" = $2, "last_sign_in_at" = $3, "current_sign_in_ip" = $4, "last_sign_in_ip" = $5, "updated_at" = $6 WHERE "users"."id" = $7[0m  [["sign_in_count", 1], ["current_sign_in_at", 2016-06-28 07:29:28 UTC], ["last_sign_in_at", 2016-06-28 07:29:28 UTC], ["current_sign_in_ip", "::1/128"], ["last_sign_in_ip", "::1/128"], ["updated_at", 2016-06-28 07:29:28 UTC], ["id", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/users/edit
+Completed 302 Found in 199ms (ActiveRecord: 6.7ms)
+
+
+Started GET "/users/edit" for ::1 at 2016-06-28 15:29:28 +0800
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(sign_up) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:9)
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(account_update) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:10)
+  Rendering devise/registrations/edit.html.erb within layouts/application
+  Rendered devise/registrations/edit.html.erb within layouts/application (4.0ms)
+Completed 200 OK in 74ms (Views: 70.1ms | ActiveRecord: 1.5ms)
+
+
+Started GET "/users/edit" for ::1 at 2016-06-28 15:29:53 +0800
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(sign_up) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:9)
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(account_update) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:10)
+  Rendering devise/registrations/edit.html.erb within layouts/application
+  Rendered devise/registrations/edit.html.erb within layouts/application (4.3ms)
+Completed 200 OK in 69ms (Views: 63.8ms | ActiveRecord: 1.7ms)
+
+
