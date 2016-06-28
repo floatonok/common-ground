@@ -9,5 +9,15 @@
 </p>
 
 <%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
+<%= link_to 'Back', projects_path %> |
 <%= link_to 'Join This Project', project_create_role_path(@project), method: :create, data: { confirm: 'Are you sure?' } %>
+
+<h4>Admin:</h4>
+<% @project_admin = Role.find_by(project_id: @project.id, role: 'admin').user.name %>
+<h6><%= @project_admin %></h6>
+
+<h4>Collaborators:</h4>
+<% @project_collaborators = Role.where(project_id: @project.id, role: 'collaborator') %>
+<% @project_collaborators.each do |collaborator| %>
+<h6><%= collaborator.user.name unless collaborator.user.nil? %></h6>
+<% end %>

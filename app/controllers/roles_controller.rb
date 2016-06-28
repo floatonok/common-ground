@@ -11,11 +11,6 @@ class RolesController < ApplicationController
   end
 
   def new
-    # @role = Role.create({
-    #   user_id: current_user,
-    #   project_id: 8,
-    #   role: 'collaborator'
-    #   })
   end
 
   def edit

@@ -14,8 +14,8 @@
   <tbody>
     <% @roles.each do |role| %>
       <tr>
-        <td><%= role.user %></td>
-        <td><%= role.project %></td>
+        <td><%= role.user.name unless role.user.nil?  %></td>
+        <td><%= role.project.title unless role.project.nil?  %></td>
         <td><%= role.role %></td>
         <td><%= link_to 'Show', project_role_path(@project.id, role) %></td>
         <td><%= link_to 'Edit', edit_project_role_path(@project.id, role) %></td>
