@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     post 'create_role', to: 'roles#create'
   end
 
-  resources :conversations, only: [:index, :show, :destroy]
+  resources :conversations do
+    resources :messages
+  end
 
 end

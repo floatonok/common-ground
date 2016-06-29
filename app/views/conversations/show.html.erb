@@ -1,17 +1,11 @@
-<% page_header "Conversation" %>
+<h1><%= @conversation.subject %></h1>
 
-<div class="panel panel-default">
-  <div class="panel-heading"><%= @conversation.subject %></div>
+<% @conversation.receipts_for(current_user).each do |r| %>
+  <%= r.message.sender.name %>
+  <%= r.message.body %>
+<% end %>
 
-  <div class="panel-body">
-    <div class="messages">
-      <% @conversation.receipts_for(current_user).each do |receipt| %>
-        <% message = receipt.message %>
-
-        <%= message.sender.name %>
-          says at <%= message.created_at.strftime("%-d %B %Y, %H:%M:%S") %>
-        <%= message.body %>
-      <% end %>
-    </div>
-  </div>
-</div>
+<%= form_tag conversation_messages_path(@conversation), method: :post do %>
+  <%= text_area_tag :body %>
+  <%= submit_tag %>
+<% end %>

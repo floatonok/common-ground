@@ -1,13 +1,23 @@
 class ConversationsController < ApplicationController
   before_action :authenticate_user!
   before_action :get_mailbox
-  before_action :get_conversation, except: [:index]
+  before_action :get_conversation, only: [:show]
 
   def index
-    @conversations = @mailbox.inbox.paginate(page: params[:page], per_page: 10)
+    @conversations = @mailbox.conversations
   end
 
   def show
+  end
+
+  def new
+    @recipients = User.all - [current_user]
+  end
+
+  def create
+    recipient = User.find(params[:user_id])
+    receipt = current_user.send_message(recipient, params[:body], params[:subject])
+    redirect_to conversation_path(receipt.conversation)
   end
 
   private

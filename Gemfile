@@ -55,3 +55,4 @@ gem 'rails_12factor', group: :production
 
 gem "rails-erd"
 gem 'mailboxer', github: 'mailboxer/mailboxer'
+gem 'gravatar_image_tag'
