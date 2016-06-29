@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160629015520) do
+ActiveRecord::Schema.define(version: 20160629134235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,8 +68,10 @@ ActiveRecord::Schema.define(version: 20160629015520) do
   create_table "projects", force: :cascade do |t|
     t.string   "title"
     t.string   "overview"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "mailboxer_conversation_id"
+    t.index ["mailboxer_conversation_id"], name: "index_projects_on_mailboxer_conversation_id", using: :btree
   end
 
   create_table "roles", force: :cascade do |t|
@@ -103,6 +105,7 @@ ActiveRecord::Schema.define(version: 20160629015520) do
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"
   add_foreign_key "mailboxer_notifications", "mailboxer_conversations", column: "conversation_id", name: "notifications_on_conversation_id"
   add_foreign_key "mailboxer_receipts", "mailboxer_notifications", column: "notification_id", name: "receipts_on_notification_id"
+  add_foreign_key "projects", "mailboxer_conversations"
   add_foreign_key "roles", "projects"
   add_foreign_key "roles", "users"
 end

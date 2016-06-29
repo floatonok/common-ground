@@ -25,7 +25,7 @@ class RolesController < ApplicationController
 
     respond_to do |format|
       if @role.save
-        format.html { redirect_to project_roles_path(@project), notice: 'Role was successfully created.' }
+        format.html { redirect_to project_path(@project), notice: 'Welcome to this project!' }
         format.json { render :show, status: :created, location: @role }
       else
         format.html { render :new }

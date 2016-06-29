@@ -1,6 +1,8 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :get_mailbox, only: [:show, :create]
+  before_action :get_conversation, only: [:show]
 
   def index
     @projects = Project.all
@@ -20,7 +22,7 @@ class ProjectsController < ApplicationController
 
   def edit
     project_admin = Role.find_by(project_id: @project.id, role: 'admin').user_id
-    unless current_user == project_admin
+    unless current_user.id == project_admin
       redirect_to @project, notice: "This project doesn't belong to you!"
     end
   end
@@ -30,6 +32,10 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
+
+        receipt = current_user.send_message(current_user, params[:body], params[:subject])
+        @project.mailboxer_conversation_id = receipt.conversation
+
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render :show, status: :created, location: @project }
       else

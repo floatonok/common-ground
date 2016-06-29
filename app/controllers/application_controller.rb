@@ -10,6 +10,14 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) << :name
   end
 
+  def get_mailbox
+    @mailbox ||= current_user.mailbox
+  end
+
+  def get_conversation
+    @conversation ||= @mailbox.conversations.find(1)
+  end
+
   # rescue_from ActiveRecord::RecordNotFound do
   #   flash[:warning] = 'Resource not found.'
   #   redirect_back_or root_path

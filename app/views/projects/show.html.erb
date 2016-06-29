@@ -1,23 +1,47 @@
-<p>
-  <strong>Title:</strong>
-  <%= @project.title %>
-</p>
-
-<p>
-  <strong>Overview:</strong>
-  <%= @project.overview %>
-</p>
-
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %> |
-<%= link_to 'Join This Project', project_create_role_path(@project), method: :create, data: { confirm: 'Are you sure?' } %>
-
-<h4>Admin:</h4>
-<% @project_admin = Role.find_by(project_id: @project.id, role: 'admin').user.name %>
-<h6><%= @project_admin %></h6>
-
-<h4>Collaborators:</h4>
+<% @project_admin = Role.find_by(project_id: @project.id, role: 'admin').user %>
 <% @project_collaborators = Role.where(project_id: @project.id, role: 'collaborator') %>
-<% @project_collaborators.each do |collaborator| %>
-<h6><%= collaborator.user.name unless collaborator.user.nil? %></h6>
-<% end %>
+
+<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-8 col-xs-12">
+  <p>PROJECT GOES HERE</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel tempora, recusandae sequi! Voluptatem cum modi tenetur maiores illo, animi ipsa quae. In officia ea consequuntur ab sapiente illum vero quam.</p>
+  <%= link_to 'Back', projects_path %>
+</div>
+
+<div class="col-lg-1 col-md-1 hidden-sm hidden-xs">
+</div>
+
+<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+  <h1><%= @project.title %></h1>
+  <h4>
+    <%= @project.overview %>
+
+    <% if current_user.id == @project_admin.id %>
+    | <%= link_to 'Edit', edit_project_path(@project) %>
+    <% end %>
+
+  </h4>
+  <%= link_to 'Join This Project', project_create_role_path(@project), method: :create, data: { confirm: 'Are you sure?' } %>
+  <h4>Admin:</h4>
+  <h6><%= @project_admin.name %></h6>
+
+  <h4>Collaborators:</h4>
+  <% @project_collaborators.each do |collaborator| %>
+  <h6><%= collaborator.user.name unless collaborator.user.nil? %></h6>
+  <% end %>
+
+  <h1><%= @conversation.subject %></h1>
+
+  <% @conversation.receipts_for(current_user).each do |r| %>
+    <%= r.message.sender.name %>
+    <%= r.message.body %>
+  <% end %>
+
+  <%= form_tag conversation_messages_path(@conversation), method: :post do %>
+    <%= text_area_tag :body %>
+    <%= submit_tag %>
+  <% end %>
+
+</div>

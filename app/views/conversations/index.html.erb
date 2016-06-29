@@ -1,7 +1,8 @@
 <h1>All conversations for <%= current_user.name %></h1>
 
 <% @conversations.each do |conversation| %>
-<%= link_to conversation_path(conversation) %>
+<%= link_to conversation.subject, conversation_path(conversation) %>
 <% end %>
+<br>
 
 <%= link_to 'New Conversation', new_conversation_path %>
