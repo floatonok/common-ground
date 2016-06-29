@@ -8261,3 +8261,394 @@ Processing by ProjectsController#show as HTML
 Completed 200 OK in 54ms (Views: 50.1ms | ActiveRecord: 2.0ms)
 
 
+Started GET "/" for ::1 at 2016-06-29 09:53:09 +0800
+Processing by ProjectsController#index as HTML
+  Rendering projects/index.html.erb within layouts/application
+  [1m[36mProject Load (22.3ms)[0m  [1m[34mSELECT "projects".* FROM "projects"[0m
+  Rendered projects/index.html.erb within layouts/application (47.0ms)
+  [1m[36mUser Load (11.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+Completed 200 OK in 247ms (Views: 201.1ms | ActiveRecord: 34.0ms)
+
+
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(5379555713109936855);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateMailboxer (20160629015518)
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+DEPRECATION WARNING: Directly inheriting from ActiveRecord::Migration is deprecated. Please specify the Rails release the migration was written for:
+
+  class CreateMailboxer < ActiveRecord::Migration[4.2] (called from require at /Users/isabellaong/General Assembly/common-ground/bin/rails:9)
+  [1m[35m (23.5ms)[0m  [1m[35mCREATE TABLE "mailboxer_conversations" ("id" serial primary key, "subject" character varying DEFAULT '', "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (6.3ms)[0m  [1m[35mCREATE TABLE "mailboxer_receipts" ("id" serial primary key, "receiver_type" character varying, "receiver_id" integer, "notification_id" integer NOT NULL, "is_read" boolean DEFAULT 'f', "trashed" boolean DEFAULT 'f', "deleted" boolean DEFAULT 'f', "mailbox_type" character varying(25), "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (10.7ms)[0m  [1m[35mCREATE TABLE "mailboxer_notifications" ("id" serial primary key, "type" character varying, "body" text, "subject" character varying DEFAULT '', "sender_type" character varying, "sender_id" integer, "conversation_id" integer, "draft" boolean DEFAULT 'f', "notification_code" character varying, "notified_object_type" character varying, "notified_object_id" integer, "attachment" character varying, "updated_at" timestamp NOT NULL, "created_at" timestamp NOT NULL, "global" boolean DEFAULT 'f', "expires" timestamp)[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE  INDEX  "index_mailboxer_receipts_on_notification_id" ON "mailboxer_receipts"  ("notification_id")[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE  INDEX  "index_mailboxer_notifications_on_conversation_id" ON "mailboxer_notifications"  ("conversation_id")[0m
+  [1m[35m (5.5ms)[0m  [1m[35mALTER TABLE "mailboxer_receipts" ADD CONSTRAINT "receipts_on_notification_id"
+FOREIGN KEY ("notification_id")
+  REFERENCES "mailboxer_notifications" ("id")
+[0m
+  [1m[35m (1.4ms)[0m  [1m[35mALTER TABLE "mailboxer_notifications" ADD CONSTRAINT "notifications_on_conversation_id"
+FOREIGN KEY ("conversation_id")
+  REFERENCES "mailboxer_conversations" ("id")
+[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160629015518"]]
+  [1m[35m (3.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddConversationOptout (20160629015519)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+DEPRECATION WARNING: Directly inheriting from ActiveRecord::Migration is deprecated. Please specify the Rails release the migration was written for:
+
+  class AddConversationOptout < ActiveRecord::Migration[4.2] (called from require at /Users/isabellaong/General Assembly/common-ground/bin/rails:9)
+  [1m[35m (4.9ms)[0m  [1m[35mCREATE TABLE "mailboxer_conversation_opt_outs" ("id" serial primary key, "unsubscriber_type" character varying, "unsubscriber_id" integer, "conversation_id" integer)[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "mailboxer_conversation_opt_outs" ADD CONSTRAINT "mb_opt_outs_on_conversations_id"
+FOREIGN KEY ("conversation_id")
+  REFERENCES "mailboxer_conversations" ("id")
+[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160629015519"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddMissingIndices (20160629015520)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+DEPRECATION WARNING: Directly inheriting from ActiveRecord::Migration is deprecated. Please specify the Rails release the migration was written for:
+
+  class AddMissingIndices < ActiveRecord::Migration[4.2] (called from require at /Users/isabellaong/General Assembly/common-ground/bin/rails:9)
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE  INDEX  "index_mailboxer_conversation_opt_outs_on_unsubscriber_id_type" ON "mailboxer_conversation_opt_outs"  ("unsubscriber_id", "unsubscriber_type")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_mailboxer_conversation_opt_outs_on_conversation_id" ON "mailboxer_conversation_opt_outs"  ("conversation_id")[0m
+  [1m[35m (4.3ms)[0m  [1m[35mCREATE  INDEX  "index_mailboxer_notifications_on_type" ON "mailboxer_notifications"  ("type")[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE  INDEX  "index_mailboxer_notifications_on_sender_id_and_sender_type" ON "mailboxer_notifications"  ("sender_id", "sender_type")[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE  INDEX  "index_mailboxer_notifications_on_notified_object_id_and_type" ON "mailboxer_notifications"  ("notified_object_id", "notified_object_type")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_mailboxer_receipts_on_receiver_id_and_receiver_type" ON "mailboxer_receipts"  ("receiver_id", "receiver_type")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160629015520"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(5379555713109936855)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (3.5ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'mailboxer_conversation_opt_outs'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.9ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'mailboxer_conversations'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.9ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'mailboxer_notifications'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.0ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'mailboxer_receipts'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.3ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'projects'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.1ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'roles'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.0ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+Started GET "/" for ::1 at 2016-06-29 10:54:59 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ProjectsController#index as HTML
+  Rendering projects/index.html.erb within layouts/application
+  [1m[36mProject Load (1.2ms)[0m  [1m[34mSELECT "projects".* FROM "projects"[0m
+  Rendered projects/index.html.erb within layouts/application (27.0ms)
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+Completed 200 OK in 2101ms (Views: 2069.8ms | ActiveRecord: 10.4ms)
+
+
+Started GET "/conversations" for ::1 at 2016-06-29 10:55:03 +0800
+Processing by ConversationsController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 0.5ms)
+
+
+  
+NoMethodError (undefined method `mailbox' for #<User:0x007fc122de2700>):
+  
+app/controllers/conversations_controller.rb:16:in `get_mailbox'
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (4.8ms)
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.6ms)
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.9ms)
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (64.2ms)
+Started GET "/" for ::1 at 2016-06-29 10:55:05 +0800
+Processing by ProjectsController#index as HTML
+  Rendering projects/index.html.erb within layouts/application
+  [1m[36mProject Load (0.8ms)[0m  [1m[34mSELECT "projects".* FROM "projects"[0m
+  Rendered projects/index.html.erb within layouts/application (3.3ms)
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+Completed 200 OK in 65ms (Views: 62.0ms | ActiveRecord: 1.8ms)
+
+
+Started GET "/conversations" for ::1 at 2016-06-29 10:55:13 +0800
+Processing by ConversationsController#index as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+Completed 500 Internal Server Error in 13ms (ActiveRecord: 1.4ms)
+
+
+  
+NoMethodError (undefined method `mailbox' for #<User:0x007fc12cb13a38>):
+  
+app/controllers/conversations_controller.rb:16:in `get_mailbox'
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (3.6ms)
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.6ms)
+  Rendering /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.7ms)
+  Rendered /Users/isabellaong/.rvm/gems/ruby-2.3.0/gems/actionpack-5.0.0.rc2/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (61.0ms)
+Started GET "/conversations" for ::1 at 2016-06-29 11:18:51 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ConversationsController#index as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+DEPRECATION WARNING: uniq is deprecated and will be removed from Rails 5.1 (use distinct instead) (called from block in <class:Conversation> at /Users/isabellaong/.rvm/gems/ruby-2.3.0/bundler/gems/mailboxer-d86062fdf62f/app/models/mailboxer/conversation.rb:18)
+  Rendering conversations/index.html.erb within layouts/application
+  [1m[36mMailboxer::Conversation Load (2.5ms)[0m  [1m[34mSELECT  DISTINCT "mailboxer_conversations".* FROM "mailboxer_conversations" INNER JOIN "mailboxer_notifications" ON "mailboxer_notifications"."conversation_id" = "mailboxer_conversations"."id" AND "mailboxer_notifications"."type" IN ('Mailboxer::Message') INNER JOIN "mailboxer_receipts" ON "mailboxer_receipts"."notification_id" = "mailboxer_notifications"."id" WHERE "mailboxer_notifications"."type" = $1 AND "mailboxer_receipts"."receiver_id" = $2 AND "mailboxer_receipts"."receiver_type" = $3 AND "mailboxer_receipts"."mailbox_type" = $4 AND "mailboxer_receipts"."trashed" = $5 AND "mailboxer_receipts"."deleted" = $6 ORDER BY mailboxer_conversations.updated_at DESC LIMIT $7 OFFSET $8[0m  [["type", "Mailboxer::Message"], ["receiver_id", 6], ["receiver_type", "User"], ["mailbox_type", "inbox"], ["trashed", false], ["deleted", false], ["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of conversations/_conversation.html.erb [0 times] (0.0ms)
+  Rendered conversations/index.html.erb within layouts/application (42.7ms)
+Completed 200 OK in 375ms (Views: 284.8ms | ActiveRecord: 24.0ms)
+
+
+Started GET "/" for ::1 at 2016-06-29 11:18:55 +0800
+Processing by ProjectsController#index as HTML
+  Rendering projects/index.html.erb within layouts/application
+  [1m[36mProject Load (0.7ms)[0m  [1m[34mSELECT "projects".* FROM "projects"[0m
+  Rendered projects/index.html.erb within layouts/application (13.6ms)
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+Completed 200 OK in 106ms (Views: 92.8ms | ActiveRecord: 7.9ms)
+
+
+Started GET "/conversations" for ::1 at 2016-06-29 11:19:05 +0800
+Processing by ConversationsController#index as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+DEPRECATION WARNING: uniq is deprecated and will be removed from Rails 5.1 (use distinct instead) (called from block in <class:Conversation> at /Users/isabellaong/.rvm/gems/ruby-2.3.0/bundler/gems/mailboxer-d86062fdf62f/app/models/mailboxer/conversation.rb:18)
+  Rendering conversations/index.html.erb within layouts/application
+  [1m[36mMailboxer::Conversation Load (3.0ms)[0m  [1m[34mSELECT  DISTINCT "mailboxer_conversations".* FROM "mailboxer_conversations" INNER JOIN "mailboxer_notifications" ON "mailboxer_notifications"."conversation_id" = "mailboxer_conversations"."id" AND "mailboxer_notifications"."type" IN ('Mailboxer::Message') INNER JOIN "mailboxer_receipts" ON "mailboxer_receipts"."notification_id" = "mailboxer_notifications"."id" WHERE "mailboxer_notifications"."type" = $1 AND "mailboxer_receipts"."receiver_id" = $2 AND "mailboxer_receipts"."receiver_type" = $3 AND "mailboxer_receipts"."mailbox_type" = $4 AND "mailboxer_receipts"."trashed" = $5 AND "mailboxer_receipts"."deleted" = $6 ORDER BY mailboxer_conversations.updated_at DESC LIMIT $7 OFFSET $8[0m  [["type", "Mailboxer::Message"], ["receiver_id", 6], ["receiver_type", "User"], ["mailbox_type", "inbox"], ["trashed", false], ["deleted", false], ["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of conversations/_conversation.html.erb [0 times] (0.0ms)
+  Rendered conversations/index.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 81ms (Views: 71.8ms | ActiveRecord: 4.2ms)
+
+
+Started GET "/conversations" for ::1 at 2016-06-29 11:22:30 +0800
+Processing by ConversationsController#index as HTML
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+DEPRECATION WARNING: uniq is deprecated and will be removed from Rails 5.1 (use distinct instead) (called from block in <class:Conversation> at /Users/isabellaong/.rvm/gems/ruby-2.3.0/bundler/gems/mailboxer-d86062fdf62f/app/models/mailboxer/conversation.rb:18)
+  Rendering conversations/index.html.erb within layouts/application
+  [1m[36mMailboxer::Conversation Load (2.6ms)[0m  [1m[34mSELECT  DISTINCT "mailboxer_conversations".* FROM "mailboxer_conversations" INNER JOIN "mailboxer_notifications" ON "mailboxer_notifications"."conversation_id" = "mailboxer_conversations"."id" AND "mailboxer_notifications"."type" IN ('Mailboxer::Message') INNER JOIN "mailboxer_receipts" ON "mailboxer_receipts"."notification_id" = "mailboxer_notifications"."id" WHERE "mailboxer_notifications"."type" = $1 AND "mailboxer_receipts"."receiver_id" = $2 AND "mailboxer_receipts"."receiver_type" = $3 AND "mailboxer_receipts"."mailbox_type" = $4 AND "mailboxer_receipts"."trashed" = $5 AND "mailboxer_receipts"."deleted" = $6 ORDER BY mailboxer_conversations.updated_at DESC LIMIT $7 OFFSET $8[0m  [["type", "Mailboxer::Message"], ["receiver_id", 6], ["receiver_type", "User"], ["mailbox_type", "inbox"], ["trashed", false], ["deleted", false], ["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of conversations/_conversation.html.erb [0 times] (0.0ms)
+  Rendered conversations/index.html.erb within layouts/application (5.1ms)
+Completed 200 OK in 60ms (Views: 51.4ms | ActiveRecord: 4.3ms)
+
+
+Started GET "/users/edit" for ::1 at 2016-06-29 11:22:31 +0800
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(sign_up) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:9)
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(account_update) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:10)
+  Rendering devise/registrations/edit.html.erb within layouts/application
+  Rendered devise/registrations/edit.html.erb within layouts/application (21.7ms)
+Completed 200 OK in 76ms (Views: 70.0ms | ActiveRecord: 1.4ms)
+
+
+Started GET "/conversations" for ::1 at 2016-06-29 11:22:35 +0800
+Processing by ConversationsController#index as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+DEPRECATION WARNING: uniq is deprecated and will be removed from Rails 5.1 (use distinct instead) (called from block in <class:Conversation> at /Users/isabellaong/.rvm/gems/ruby-2.3.0/bundler/gems/mailboxer-d86062fdf62f/app/models/mailboxer/conversation.rb:18)
+  Rendering conversations/index.html.erb within layouts/application
+  [1m[36mMailboxer::Conversation Load (1.0ms)[0m  [1m[34mSELECT  DISTINCT "mailboxer_conversations".* FROM "mailboxer_conversations" INNER JOIN "mailboxer_notifications" ON "mailboxer_notifications"."conversation_id" = "mailboxer_conversations"."id" AND "mailboxer_notifications"."type" IN ('Mailboxer::Message') INNER JOIN "mailboxer_receipts" ON "mailboxer_receipts"."notification_id" = "mailboxer_notifications"."id" WHERE "mailboxer_notifications"."type" = $1 AND "mailboxer_receipts"."receiver_id" = $2 AND "mailboxer_receipts"."receiver_type" = $3 AND "mailboxer_receipts"."mailbox_type" = $4 AND "mailboxer_receipts"."trashed" = $5 AND "mailboxer_receipts"."deleted" = $6 ORDER BY mailboxer_conversations.updated_at DESC LIMIT $7 OFFSET $8[0m  [["type", "Mailboxer::Message"], ["receiver_id", 6], ["receiver_type", "User"], ["mailbox_type", "inbox"], ["trashed", false], ["deleted", false], ["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of conversations/_conversation.html.erb [0 times] (0.0ms)
+  Rendered conversations/index.html.erb within layouts/application (4.0ms)
+Completed 200 OK in 52ms (Views: 45.3ms | ActiveRecord: 1.8ms)
+
+
+Started DELETE "/users/sign_out" for ::1 at 2016-06-29 11:22:36 +0800
+Processing by Devise::SessionsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"WlRs+/B4BtKpJbQ4bMW6WqZUsOKgXMIoIlbdaUo1JrmzOV0ALard6Yc57ZbUX3Cl/LGBhxYewzqfsiTeW4VJRw=="}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(sign_up) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:9)
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(account_update) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:10)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 7ms (ActiveRecord: 0.7ms)
+
+
+Started GET "/" for ::1 at 2016-06-29 11:22:36 +0800
+Processing by ProjectsController#index as HTML
+  Rendering projects/index.html.erb within layouts/application
+  [1m[36mProject Load (0.5ms)[0m  [1m[34mSELECT "projects".* FROM "projects"[0m
+  Rendered projects/index.html.erb within layouts/application (2.9ms)
+Completed 200 OK in 58ms (Views: 55.7ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/users/sign_in" for ::1 at 2016-06-29 11:22:37 +0800
+Processing by Devise::SessionsController#new as HTML
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(sign_up) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:9)
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(account_update) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:10)
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (0.9ms)
+  Rendered devise/sessions/new.html.erb within layouts/application (6.6ms)
+Completed 200 OK in 54ms (Views: 52.6ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users/sign_in" for ::1 at 2016-06-29 11:22:46 +0800
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"6mA71SCoP7qos9BMifRUF2qgmRRiwwXI2BIjT3qDcKiE1NfeqKwQVnIJBFInF2rIFzbWDHejU+Lv2sPnUjhKLg==", "user"=>{"email"=>"isabella@cg.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(sign_up) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:sign_up, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:9)
+DEPRECATION WARNING: [Devise] Changing the sanitized parameters through "Devise::ParameterSanitizer#for(account_update) is deprecated and it will be removed from Devise 4.2.
+Please use the `permit` method to add or remove any key:
+
+  To add any new key, use the `keys` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, keys: [:param1, :param2, :param3])
+
+  To remove any existing key, use the `except` keyword argument:
+  devise_parameter_sanitizer.permit(:account_update, except: [:email])
+ (called from configure_permitted_parameters at /Users/isabellaong/General Assembly/common-ground/app/controllers/application_controller.rb:10)
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "isabella@cg.com"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.8ms)[0m  [1m[33mUPDATE "users" SET "current_sign_in_at" = $1, "last_sign_in_at" = $2, "sign_in_count" = $3, "updated_at" = $4 WHERE "users"."id" = $5[0m  [["current_sign_in_at", 2016-06-29 03:22:46 UTC], ["last_sign_in_at", 2016-06-28 14:16:22 UTC], ["sign_in_count", 3], ["updated_at", 2016-06-29 03:22:46 UTC], ["id", 1]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 181ms (ActiveRecord: 5.9ms)
+
+
+Started GET "/" for ::1 at 2016-06-29 11:22:46 +0800
+Processing by ProjectsController#index as HTML
+  Rendering projects/index.html.erb within layouts/application
+  [1m[36mProject Load (0.5ms)[0m  [1m[34mSELECT "projects".* FROM "projects"[0m
+  Rendered projects/index.html.erb within layouts/application (3.0ms)
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Completed 200 OK in 47ms (Views: 44.2ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/conversations" for ::1 at 2016-06-29 11:22:51 +0800
+Processing by ConversationsController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+DEPRECATION WARNING: uniq is deprecated and will be removed from Rails 5.1 (use distinct instead) (called from block in <class:Conversation> at /Users/isabellaong/.rvm/gems/ruby-2.3.0/bundler/gems/mailboxer-d86062fdf62f/app/models/mailboxer/conversation.rb:18)
+  Rendering conversations/index.html.erb within layouts/application
+  [1m[36mMailboxer::Conversation Load (2.7ms)[0m  [1m[34mSELECT  DISTINCT "mailboxer_conversations".* FROM "mailboxer_conversations" INNER JOIN "mailboxer_notifications" ON "mailboxer_notifications"."conversation_id" = "mailboxer_conversations"."id" AND "mailboxer_notifications"."type" IN ('Mailboxer::Message') INNER JOIN "mailboxer_receipts" ON "mailboxer_receipts"."notification_id" = "mailboxer_notifications"."id" WHERE "mailboxer_notifications"."type" = $1 AND "mailboxer_receipts"."receiver_id" = $2 AND "mailboxer_receipts"."receiver_type" = $3 AND "mailboxer_receipts"."mailbox_type" = $4 AND "mailboxer_receipts"."trashed" = $5 AND "mailboxer_receipts"."deleted" = $6 ORDER BY mailboxer_conversations.updated_at DESC LIMIT $7 OFFSET $8[0m  [["type", "Mailboxer::Message"], ["receiver_id", 1], ["receiver_type", "User"], ["mailbox_type", "inbox"], ["trashed", false], ["deleted", false], ["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of conversations/_conversation.html.erb [0 times] (0.0ms)
+  Rendered conversations/index.html.erb within layouts/application (5.8ms)
+Completed 200 OK in 50ms (Views: 44.1ms | ActiveRecord: 3.2ms)
+
+
