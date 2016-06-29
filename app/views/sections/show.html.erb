@@ -1,0 +1,22 @@
+<p>
+  <strong>Project:</strong>
+  <%= @section.project.title %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @section.user.name %>
+</p>
+
+<p>
+  <strong>Header:</strong>
+  <%= @section.header %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @section.description %>
+</p>
+
+<%= link_to 'Edit', edit_project_section_path(@project) %> |
+<%= link_to 'Back', project_sections_path(@project) %>

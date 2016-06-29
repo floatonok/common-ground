@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160629134235) do
+ActiveRecord::Schema.define(version: 20160629151802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,21 @@ ActiveRecord::Schema.define(version: 20160629134235) do
     t.index ["user_id"], name: "index_roles_on_user_id", using: :btree
   end
 
+  create_table "sections", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.string   "header"
+    t.string   "description"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.index ["project_id"], name: "index_sections_on_project_id", using: :btree
+    t.index ["user_id"], name: "index_sections_on_user_id", using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -108,4 +123,6 @@ ActiveRecord::Schema.define(version: 20160629134235) do
   add_foreign_key "projects", "mailboxer_conversations"
   add_foreign_key "roles", "projects"
   add_foreign_key "roles", "users"
+  add_foreign_key "sections", "projects"
+  add_foreign_key "sections", "users"
 end

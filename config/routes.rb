@@ -1,17 +1,19 @@
 Rails.application.routes.draw do
 
-  get 'conversations/index'
+  # WHAT ARE THESE ROUTES FOR?
+  # get 'conversations/index'
+  # get 'conversations/show'
 
-  get 'conversations/show'
+  # resources :projects
+  # resources :roles, except: [:create]
+  # resources :sections
 
   root 'projects#index'
 
   devise_for :users
-  # resources :projects
-
-  # resources :roles, except: [:create]
 
   resources :projects do
+    resources :sections
     resources :roles, except: [:create]
     post 'create_role', to: 'roles#create'
   end

@@ -9,6 +9,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    @sections = Section.where(project_id: @project.id)
   end
 
   def new
@@ -33,7 +34,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project.save
 
-        receipt = current_user.send_message(current_user, params[:body], params[:subject])
+        receipt = current_user.send_message(current_user, 'body', 'subject')
         @project.mailboxer_conversation_id = receipt.conversation
 
         format.html { redirect_to @project, notice: 'Project was successfully created.' }

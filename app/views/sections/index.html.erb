@@ -1,0 +1,15 @@
+<%= link_to 'New Section', new_project_section_path(@project) %>
+
+<% @sections.each do |section| %>
+
+  <div class="well">
+    <h3><%= section.header %></h3>
+    <h5>Created By: <%= section.user.name %></h5>
+    <%= image_tag section.image.url(:large) %>
+    <p><%= section.description %></p>
+    <%= link_to 'Show', project_section_path(@project, section) %>
+    <%= link_to 'Edit', edit_project_section_path(@project, section) %>
+    <%= link_to 'Destroy', project_section_path(@project, section), method: :delete, data: { confirm: 'Are you sure?' } %>
+  </div>
+
+<% end %>

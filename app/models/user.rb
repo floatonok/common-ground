@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :roles
   has_many :projects, through: :roles
+  has_many :sections
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
 
