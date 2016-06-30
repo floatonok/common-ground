@@ -1,5 +1,6 @@
 <div class="col-lg-9 col-md-9 col-sm-10 col-xs-12">
-  <h1>Find a project to join!</h1>
+  <h3>Find a project to join</h3>
+  <br><br>
 
   <div class="row">
     <% @projects.order('created_at DESC').each do |project| %>
@@ -21,7 +22,9 @@
 
 
 <div class="col-lg-3 col-md-3 col-sm-2 col-xs-12">
-  <h2>Categories</h2>
-  <%= link_to 'New Project', new_project_path %>
+
+  <%= link_to new_project_path, class: "btn" do %>
+  <div class="glyphicon glyphicon-plus"></div>
+  <% end %>
 
 </div>

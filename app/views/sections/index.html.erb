@@ -3,14 +3,18 @@
 
 <% if user_signed_in? %>
 <% if current_user == @project_admin %>
-<div class="well">
-  <%= link_to 'New Section', new_project_section_path(@project) %>
+<div class="well text-center">
+  <%= link_to new_project_section_path(@project), class: "btn" do %>
+  <div class="glyphicon glyphicon-plus"></div>
+  <% end %>
 </div>
 <% else %>
   <% @project_collaborators.each do |c| %>
   <% if current_user.id == c.user_id %>
-    <div class="well">
-      <%= link_to 'New Section', new_project_section_path(@project) %>
+    <div class="well text-center">
+      <%= link_to new_project_section_path(@project), class: "btn" do %>
+      <div class="glyphicon glyphicon-plus"></div>
+      <% end %>
     </div>
 <% end %>
 <% end %>
@@ -19,7 +23,7 @@
 
 <% @sections.each do |section| %>
 
-<div class="well well-lg">
+<div class="well well-lg text-center">
   <h3><%= link_to section.header, project_section_path(@project, section) %></h3>
   <h5>Created By: <%= section.user.name %></h5>
   <%= image_tag section.image.url(:large) %>
@@ -27,15 +31,15 @@
   <p><%= section.description %></p>
   <% if user_signed_in? %>
     <% if current_user == @project_admin %>
-      <%= link_to "Download", download_path(section), method: :post %>
-      <%= link_to 'Edit', edit_project_section_path(@project, section) %>
-      <%= link_to 'Delete', project_section_path(@project, section), method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%= link_to "DOWNLOAD", download_path(section), method: :post %> |
+      <%= link_to 'EDIT', edit_project_section_path(@project, section) %> |
+      <%= link_to 'DELETE', project_section_path(@project, section), method: :delete, data: { confirm: 'Are you sure?' } %>
   <% else %>
   <% @project_collaborators.each do |c| %>
   <% if current_user.id == c.user_id %>
-    <%= link_to "Download", download_path(section), method: :post %>
-    <%= link_to 'Edit', edit_project_section_path(@project, section) %>
-    <%= link_to 'Delete', project_section_path(@project, section), method: :delete, data: { confirm: 'Are you sure?' } %>
+    <%= link_to "DOWNLOAD", download_path(section), method: :post %> |
+    <%= link_to 'EDIT', edit_project_section_path(@project, section) %> |
+    <%= link_to 'DELETE', project_section_path(@project, section), method: :delete, data: { confirm: 'Are you sure?' } %>
   <% end %>
   <% end %>
   <% end %>

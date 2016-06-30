@@ -11,22 +11,23 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :image %>
     <%= f.file_field :image %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :header %>
-    <%= f.text_field :header %>
+    <%= f.text_field :header, class: "form-control"  %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :description %>
-    <%= f.text_field :description %>
+    <%= f.text_field :description, class: "form-control"  %>
   </div>
 
   <div class="actions">
     <%= f.submit %>
   </div>
+  <br>
 <% end %>

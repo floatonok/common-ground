@@ -3,13 +3,16 @@
 
 <div class="col-lg-6 col-md-6 col-sm-8 col-xs-12">
   <h1>All conversations for <%= current_user.name %></h1>
-  <div class="well">
-    <%= link_to 'New Conversation', new_conversation_path %>
+  <br>
+  <div class="well text-center">
+    <%= link_to new_conversation_path, class: "btn" do %>
+    <div class="glyphicon glyphicon-plus"></div>
+    <% end %>
   </div>
 
   <% @conversations.each do |conversation| %>
   <div class="well well-lg">
-    <h4><%= link_to conversation.subject, conversation_path(conversation) %></h4>
+    <h4><%= link_to conversation.subject.upcase, conversation_path(conversation) %></h4>
   </div>
   <% end %>
   <br>
