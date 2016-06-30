@@ -2,7 +2,6 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
   before_action :get_mailbox, only: [:show, :create]
-  # before_action :get_conversation, only: [:show]
 
   def index
     @projects = Project.all
@@ -38,7 +37,7 @@ class ProjectsController < ApplicationController
           project: @project,
           role: 'admin'
           })
-        
+
         receipt = current_user.send_message(nil, " created the project", "#{@project.title}")
         @project.mailboxer_conversation_id = receipt.conversation.id
         @project.save
