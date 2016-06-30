@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="messages">
+      <% @conversation.receipts_for(current_user).each do |r| %>
+      <div class="well well-sm">
+        <strong><%= r.message.sender.name %></strong> <em><%= time_ago_in_words(r.message.created_at) +' ago' %></em><br>
+        <%= r.message.body %><br>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<%= form_tag conversation_messages_path(@conversation), method: :post do %>
+<div class="form-group">
+  <%= label_tag :body %>
+  <%= text_area_tag :body, nil, class: "form-control", placeholder: "Enter Message Here" %>
+</div>
+
+<div class="form-group">
+  <div class="actions">
+    <%= submit_tag %>
+  </div>
+</div>
+<% end %>

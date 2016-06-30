@@ -8,7 +8,7 @@ class ConversationsController < ApplicationController
   end
 
   def new
-    @recipients = User.all
+    @recipients = User.all - [current_user]
   end
 
   def show

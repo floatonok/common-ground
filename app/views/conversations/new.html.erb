@@ -1,12 +1,27 @@
-<h1>New Conversation</h1>
+<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">
+</div>
 
-<%= form_tag conversations_path, method: :post do %>
-  <%= select_tag :user_ids, options_from_collection_for_select(@recipients, :id, :name), multiple: true, class: 'form-control chosen-it' %>
+<div class="col-lg-6 col-md-6 col-sm-8 col-xs-12">
+  <h1>New Conversation</h1>
 
-  <%= text_field_tag :subject, nil, placeholder: 'Subject' %><br>
+  <%= form_tag conversations_path, method: :post do %>
+    <div class="form-group">
+      <%= select_tag :user_ids, options_from_collection_for_select(@recipients, :id, :name), multiple: true, class: 'form-control chosen-it' %>
+    </div>
 
-  <%= text_area_tag :body, nil, placeholder: 'Leave a message' %><br>
+    <div class="form-group">
+      <%= text_field_tag :subject, nil, class: "form-control", placeholder: 'Subject' %><br>
+    </div>
+    <div class="form-group">
+      <%= text_area_tag :body, nil, class: "form-control",  placeholder: 'Leave a message' %><br>
+    </div>
+    <%= submit_tag %>
 
-  <%= submit_tag %>
+  <% end %>
+</div>
 
-<% end %>
+<div class="col-lg-1 col-md-1 hidden-sm hidden-xs">
+</div>
+
+<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+</div>

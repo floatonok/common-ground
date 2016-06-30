@@ -29,33 +29,14 @@
     <% if current_user.id == collaborator.user.id %>
     <% @conversation ||= @project_admin.mailbox.conversations.find(@project.mailboxer_conversation_id) %>
       <h2>Discussion</h2>
-
-      <% @conversation.receipts_for(current_user).each do |r| %>
-        <strong><%= r.message.sender.name %></strong><%= time_ago_in_words(r.message.created_at) +' ago' %><br>
-        <%= r.message.body %><br>
-      <% end %>
-
-      <%= form_tag conversation_messages_path(@conversation), method: :post do %>
-        <%= text_area_tag :body %>
-        <%= submit_tag %>
-      <% end %>
-
+      <%= render "conversations/conversation"%>
     <% end %>
   <% end %>
 
    <% if current_user.id == @project_admin.id %>
      <% @conversation ||= @project_admin.mailbox.conversations.find(@project.mailboxer_conversation_id) %>
      <h2>Discussion</h2>
-
-     <% @conversation.receipts_for(current_user).each do |r| %>
-       <strong><%= r.message.sender.name %></strong> <%= time_ago_in_words(r.message.created_at) +' ago' %><br>
-       <%= r.message.body %><br>
-     <% end %>
-
-     <%= form_tag conversation_messages_path(@conversation), method: :post do %>
-       <%= text_area_tag :body %>
-       <%= submit_tag %>
-     <% end %>
+      <%= render "conversations/conversation"%>
    <% end %>
 
 
