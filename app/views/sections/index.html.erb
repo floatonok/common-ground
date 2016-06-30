@@ -1,16 +1,46 @@
-<%= link_to 'New Section', new_project_section_path(@project) %>
+<% @project_admin = Role.find_by(project_id: @project.id, role: 'admin').user %>
+<% @project_collaborators = Role.where(project_id: @project.id, role: 'collaborator') %>
+
+<% if user_signed_in? %>
+<% if current_user == @project_admin %>
+<div class="well">
+  <%= link_to 'New Section', new_project_section_path(@project) %>
+</div>
+<% else %>
+  <% @project_collaborators.each do |c| %>
+  <% if current_user.id == c.user_id %>
+    <div class="well">
+      <%= link_to 'New Section', new_project_section_path(@project) %>
+    </div>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
 
 <% @sections.each do |section| %>
 
-  <div class="well">
-    <h3><%= section.header %></h3>
-    <h5>Created By: <%= section.user.name %></h5>
-    <%= image_tag section.image.url(:large) %>
-    <p><%= section.description %></p>
-    <%= link_to 'Show', project_section_path(@project, section) %>
+<div class="well well-lg">
+  <h3><%= link_to section.header, project_section_path(@project, section) %></h3>
+  <h5>Created By: <%= section.user.name %></h5>
+  <%= image_tag section.image.url(:large) %>
+  <br><br>
+  <p><%= section.description %></p>
+  <% if user_signed_in? %>
+    <% if current_user == @project_admin %>
+      <%= link_to "Download", download_path(section), method: :post %>
+      <%= link_to 'Edit', edit_project_section_path(@project, section) %>
+      <%= link_to 'Delete', project_section_path(@project, section), method: :delete, data: { confirm: 'Are you sure?' } %>
+  <% else %>
+  <% @project_collaborators.each do |c| %>
+  <% if current_user.id == c.user_id %>
     <%= link_to "Download", download_path(section), method: :post %>
     <%= link_to 'Edit', edit_project_section_path(@project, section) %>
-    <%= link_to 'Destroy', project_section_path(@project, section), method: :delete, data: { confirm: 'Are you sure?' } %>
-  </div>
+    <%= link_to 'Delete', project_section_path(@project, section), method: :delete, data: { confirm: 'Are you sure?' } %>
+  <% end %>
+  <% end %>
+  <% end %>
+  <% end %>
+
+</div>
 
 <% end %>

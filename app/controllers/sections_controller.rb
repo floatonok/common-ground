@@ -53,15 +53,10 @@ class SectionsController < ApplicationController
   end
 
   def download
-    #location = "#{Rails.root}"
-
-    # send_file  (@upload)
-    #send_file('public/test_file.pdf', :filename => 'Test File', :type => 'application/pdf', :disposition => 'attachment', :streaming => 'true', :buffer_size => '4096')
     send_file @section.image.path,
     :filename => @section.image_file_name,
     :type => @section.image_content_type,
     :disposition => 'attachment'
-    flash[:notice] = "Your file has been downloaded"
   end
 
 

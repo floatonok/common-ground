@@ -7,13 +7,10 @@
 
     <div class="col-sm-6 col-md-4 col-lg-4">
       <div class="thumbnail">
-        <h3><%= project.title %></h3>
+        <h3><%= link_to project.title, project %></h3>
         <% section = Section.find_by(project_id: project.id)%>
-        <%= image_tag section.image.url(:medium) %>
+        <%= image_tag section.image.url(:medium) unless section.blank? %>
         <h6><%= project.overview %></h6>
-        <%= link_to 'Show', project %>
-        <%= link_to 'Edit', edit_project_path(project) %>
-        <%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %>
 
       </div>
     </div>

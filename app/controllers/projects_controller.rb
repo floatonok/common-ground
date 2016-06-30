@@ -1,13 +1,17 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :get_mailbox, only: [:show, :create]
+  before_action :get_mailbox, only: [ :create]
 
   def index
     @projects = Project.all
   end
 
   def show
+    if user_signed_in?
+      @mailbox ||= current_user.mailbox
+    end
+
     @project_admin = Role.find_by(project_id: @project.id, role: 'admin').user
     @project_collaborators = Role.where(project_id: @project.id, role: 'collaborator')
 

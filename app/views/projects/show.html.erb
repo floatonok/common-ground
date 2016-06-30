@@ -12,31 +12,40 @@
 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
   <h1><%= @project.title %></h1>
   <h4>
-    <%= @project.overview %>
+    <%= @project.overview %><br>
 
+    <% if user_signed_in? %>
     <% if current_user.id == @project_admin.id %>
-    | <%= link_to 'Edit', edit_project_path(@project) %>
+    <%= link_to 'Edit', edit_project_path(@project) %>
     <% end %>
-
+    <% end %>
   </h4>
-  <%= link_to 'Join This Project', project_create_role_path(@project), method: :create, data: { confirm: 'Are you sure?' } %>
+
+  <% unless current_user == @project_admin %>
+    <%= link_to 'Join This Project', project_create_role_path(@project), method: :create, data: { confirm: 'Are you sure?' } %>
+  <% end %>
+
   <h4>Admin:</h4>
   <h6><%= @project_admin.name %></h6>
 
   <h4>Collaborators:</h4>
   <% @project_collaborators.each do |collaborator| %>
     <h6><%= collaborator.user.name unless collaborator.user.nil? %></h6>
+    <% if user_signed_in? %>
     <% if current_user.id == collaborator.user.id %>
     <% @conversation ||= @project_admin.mailbox.conversations.find(@project.mailboxer_conversation_id) %>
       <h2>Discussion</h2>
       <%= render "conversations/conversation"%>
     <% end %>
   <% end %>
+  <% end %>
 
+  <% if user_signed_in? %>
    <% if current_user.id == @project_admin.id %>
      <% @conversation ||= @project_admin.mailbox.conversations.find(@project.mailboxer_conversation_id) %>
      <h2>Discussion</h2>
       <%= render "conversations/conversation"%>
+   <% end %>
    <% end %>
 
 
