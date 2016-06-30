@@ -31,7 +31,7 @@
       <h2>Discussion</h2>
 
       <% @conversation.receipts_for(current_user).each do |r| %>
-        <strong><%= r.message.sender.name %></strong><br>
+        <strong><%= r.message.sender.name %></strong><%= time_ago_in_words(r.message.created_at) +' ago' %><br>
         <%= r.message.body %><br>
       <% end %>
 
@@ -48,7 +48,7 @@
      <h2>Discussion</h2>
 
      <% @conversation.receipts_for(current_user).each do |r| %>
-       <strong><%= r.message.sender.name %></strong><br>
+       <strong><%= r.message.sender.name %></strong> <%= time_ago_in_words(r.message.created_at) +' ago' %><br>
        <%= r.message.body %><br>
      <% end %>
 
