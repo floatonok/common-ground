@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_conversation
-    @conversation ||= @mailbox.conversations.find(1)
+    # @conversation ||= @mailbox.conversations.find(1)
   end
 
   # rescue_from ActiveRecord::RecordNotFound do

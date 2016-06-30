@@ -2,23 +2,20 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
   before_action :get_mailbox, only: [:show, :create]
-  before_action :get_conversation, only: [:show]
+  # before_action :get_conversation, only: [:show]
 
   def index
     @projects = Project.all
   end
 
   def show
+    @conversation = @mailbox.conversations.find(@project.mailboxer_conversation_id)
     @sections = Section.where(project_id: @project.id)
   end
 
   def new
     @project = Project.new
-    role = Role.create({
-      user: current_user,
-      project: @project,
-      role: 'admin'
-      })
+
   end
 
   def edit
@@ -33,9 +30,15 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
+        role = Role.create({
+          user: current_user,
+          project: @project,
+          role: 'admin'
+          })
 
-        receipt = current_user.send_message(current_user, 'body', 'subject')
-        @project.mailboxer_conversation_id = receipt.conversation
+        receipt = current_user.send_message(nil, "#{current_user.name} created the project", "#{@project.title}")
+        @project.mailboxer_conversation_id = receipt.conversation.id
+        @project.save
 
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render :show, status: :created, location: @project }

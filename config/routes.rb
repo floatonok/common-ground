@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :roles, except: [:create]
     post 'create_role', to: 'roles#create'
   end
+  post 'download/:id', to: 'sections#download', :as => :download
 
   resources :conversations do
     resources :messages

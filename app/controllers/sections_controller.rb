@@ -1,5 +1,5 @@
 class SectionsController < ApplicationController
-  before_action :set_section, only: [:show, :edit, :update, :destroy]
+  before_action :set_section, only: [:show, :edit, :update, :destroy, :download]
   before_action :set_section_project
 
   def index
@@ -52,18 +52,31 @@ class SectionsController < ApplicationController
     end
   end
 
+  def download
+    #location = "#{Rails.root}"
+
+    # send_file  (@upload)
+    #send_file('public/test_file.pdf', :filename => 'Test File', :type => 'application/pdf', :disposition => 'attachment', :streaming => 'true', :buffer_size => '4096')
+    send_file section.image.path,
+    :filename => section.image_file_name,
+    :type => section.image_content_type,
+    :disposition => 'attachment'
+    flash[:notice] = "Your file has been downloaded"
+  end
+
+
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_section
-      @section = Section.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_section
+    @section = Section.find(params[:id])
+  end
 
-    def set_section_project
-      @project = Project.find(params[:project_id])
-    end
+  def set_section_project
+    @project = Project.find(params[:project_id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def section_params
-      params.require(:section).permit(:header, :description, :image)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def section_params
+    params.require(:section).permit(:header, :description, :image)
+  end
 end
