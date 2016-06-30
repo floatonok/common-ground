@@ -8,7 +8,7 @@
     <%= image_tag section.image.url(:large) %>
     <p><%= section.description %></p>
     <%= link_to 'Show', project_section_path(@project, section) %>
-    <%= link_to "Download", download_path %>
+    <%= link_to "Download", download_path(section), method: :post %>
     <%= link_to 'Edit', edit_project_section_path(@project, section) %>
     <%= link_to 'Destroy', project_section_path(@project, section), method: :delete, data: { confirm: 'Are you sure?' } %>
   </div>
