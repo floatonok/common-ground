@@ -17,14 +17,23 @@ class RolesController < ApplicationController
   end
 
   def create
+
     @role = Role.create({
       user_id: current_user.id,
-      project_id: 8,
+      project_id: Project.find(params[:project_id]).id,
       role: 'collaborator'
       })
 
     respond_to do |format|
       if @role.save
+
+        # @project = @role.project_id
+        # @project_admin = Role.find_by(project_id: @project.id, role: 'admin').user
+        # @conversation ||= @project_admin.mailbox.conversations.find(@project.mailboxer_conversation_id)
+        #
+        # receipt = current_user.reply_to_conversation(@conversation, 'joined the project!')
+        # redirect_to project_path(@project)
+
         format.html { redirect_to project_path(@project), notice: 'Welcome to this project!' }
         format.json { render :show, status: :created, location: @role }
       else

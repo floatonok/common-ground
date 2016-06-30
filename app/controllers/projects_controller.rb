@@ -9,13 +9,15 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @conversation = @mailbox.conversations.find(@project.mailboxer_conversation_id)
-    @sections = Section.where(project_id: @project.id)
+    @project_admin = Role.find_by(project_id: @project.id, role: 'admin').user
+    @project_collaborators = Role.where(project_id: @project.id, role: 'collaborator')
+
+    @sections = Section.where(project_id: @project.id).order('created_at DESC')
+
   end
 
   def new
     @project = Project.new
-
   end
 
   def edit
@@ -30,13 +32,14 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
+
         role = Role.create({
           user: current_user,
           project: @project,
           role: 'admin'
           })
-
-        receipt = current_user.send_message(nil, "#{current_user.name} created the project", "#{@project.title}")
+        
+        receipt = current_user.send_message(nil, " created the project", "#{@project.title}")
         @project.mailboxer_conversation_id = receipt.conversation.id
         @project.save
 

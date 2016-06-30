@@ -1,6 +1,3 @@
-<% @project_admin = Role.find_by(project_id: @project.id, role: 'admin').user %>
-<% @project_collaborators = Role.where(project_id: @project.id, role: 'collaborator') %>
-
 <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">
 </div>
 
@@ -28,19 +25,38 @@
 
   <h4>Collaborators:</h4>
   <% @project_collaborators.each do |collaborator| %>
-  <h6><%= collaborator.user.name unless collaborator.user.nil? %></h6>
+    <h6><%= collaborator.user.name unless collaborator.user.nil? %></h6>
+    <% if current_user.id == collaborator.user.id %>
+    <% @conversation ||= @project_admin.mailbox.conversations.find(@project.mailboxer_conversation_id) %>
+      <h2>Discussion</h2>
+
+      <% @conversation.receipts_for(current_user).each do |r| %>
+        <strong><%= r.message.sender.name %></strong><br>
+        <%= r.message.body %><br>
+      <% end %>
+
+      <%= form_tag conversation_messages_path(@conversation), method: :post do %>
+        <%= text_area_tag :body %>
+        <%= submit_tag %>
+      <% end %>
+
+    <% end %>
   <% end %>
 
-  <h1><%= @conversation.subject %></h1>
+   <% if current_user.id == @project_admin.id %>
+     <% @conversation ||= @project_admin.mailbox.conversations.find(@project.mailboxer_conversation_id) %>
+     <h2>Discussion</h2>
 
-  <% @conversation.receipts_for(current_user).each do |r| %>
-    <%= r.message.sender.name %>
-    <%= r.message.body %>
-  <% end %>
+     <% @conversation.receipts_for(current_user).each do |r| %>
+       <%= r.message.sender.name %>
+       <%= r.message.body %>
+     <% end %>
 
-  <%= form_tag conversation_messages_path(@conversation), method: :post do %>
-    <%= text_area_tag :body %>
-    <%= submit_tag %>
-  <% end %>
+     <%= form_tag conversation_messages_path(@conversation), method: :post do %>
+       <%= text_area_tag :body %>
+       <%= submit_tag %>
+     <% end %>
+   <% end %>
+
 
 </div>
