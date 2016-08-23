@@ -56,7 +56,7 @@ gem 'rails_12factor', group: :production
 gem "rails-erd"
 gem 'mailboxer', github: 'mailboxer/mailboxer'
 gem 'gravatar_image_tag'
-gem 'paperclip'
-gem 'aws-sdk'
+gem "paperclip", "~> 5.0.0.beta1"
+gem 'aws-sdk', '< 2.0'
 gem 'compass-rails'
 gem 'chosen-rails'
